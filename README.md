@@ -12,12 +12,9 @@ SLAMTEC LIDAR SDK: https://github.com/Slamtec/rplidar_sdk
 
 SLAMTEC LIDAR Tutorial:  https://github.com/robopeak/rplidar_ros/wiki
 
-## How to [install ROS2](https://index.ros.org/doc/ros2/Installation)
-[foxy](https://docs.ros.org/en/foxy/Installation.html),
-[dashing](https://docs.ros.org/en/dashing/Installation.html),
-[rolling](https://docs.ros.org/en/rolling/Installation.html)
 
-Supported SLAMTEC LIDAR Model
+Supported Platforms
+-------------------
 | SLAMTEC LIDAR Model    | 
 | ---------------------- | 
 |RPLIDAR A1              | 
@@ -26,6 +23,12 @@ Supported SLAMTEC LIDAR Model
 |RPLIDAR S1              |
 |RPLIDAR S2              | 
 |SLAMTEC LPX T1          | 
+
+
+## How to [install ROS2](https://index.ros.org/doc/ros2/Installation)
+[foxy](https://docs.ros.org/en/foxy/Installation.html),
+[dashing](https://docs.ros.org/en/dashing/Installation.html),
+[rolling](https://docs.ros.org/en/rolling/Installation.html)
 
 ## How to configuring your ROS 2 environment
 [Configuring your ROS 2 environment](https://docs.ros.org/en/foxy/Tutorials/Configuring-ROS2-Environment.html)
