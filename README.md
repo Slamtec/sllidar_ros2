@@ -1,21 +1,31 @@
-# SLLIDAR ROS2 Package
+# SLAMTEC LIDAR ROS2 Package
 
-ROS2 node for SLLIDAR
+ROS2 node for SLAMTEC LIDAR
 
-Visit following Website for more details about SLLIDAR:
+Visit following Website for more details about SLAMTEC LIDAR:
 
-SLLidar roswiki: http://wiki.ros.org/sllidar
+SLAMTEC LIDAR roswiki: http://wiki.ros.org/sllidar， http://wiki.ros.org/rplidar
 
-SLLidar HomePage:   http://www.slamtec.com/en/Lidar
+SLAMTEC LIDAR HomePage:   http://www.slamtec.com/en/Lidar
 
-SLLidar SDK: https://github.com/Slamtec/sllidar_sdk
+SLAMTEC LIDAR SDK: https://github.com/Slamtec/rplidar_sdk
 
-SLLidar Tutorial:  https://github.com/robopeak/rplidar_ros/wiki
+SLAMTEC LIDAR Tutorial:  https://github.com/robopeak/rplidar_ros/wiki
 
 ## How to [install ROS2](https://index.ros.org/doc/ros2/Installation)
-[foxy](https://docs.ros.org/en/foxy/Installation.html)
-[dashing](https://docs.ros.org/en/dashing/Installation.html)
+[foxy](https://docs.ros.org/en/foxy/Installation.html),
+[dashing](https://docs.ros.org/en/dashing/Installation.html),
 [rolling](https://docs.ros.org/en/rolling/Installation.html)
+
+Supported SLAMTEC LIDAR Model
+| SLAMTEC LIDAR Model    | 
+| ---------------------- | 
+|RPLIDAR A1              | 
+|RPLIDAR A2              | 
+|RPLIDAR A3              | 
+|RPLIDAR S1              |
+|RPLIDAR S2              | 
+|SLAMTEC LPX T1          | 
 
 ## How to configuring your ROS 2 environment
 [Configuring your ROS 2 environment](https://docs.ros.org/en/foxy/Tutorials/Configuring-ROS2-Environment.html)
@@ -56,37 +66,37 @@ SLLidar Tutorial:  https://github.com/robopeak/rplidar_ros/wiki
 
 ### Run sllidar node and view in the rviz
 
-The command for sllidar A1/A2 is : 
+The command for Rplidar A1/A2 is : 
 
 ```bash
 ros2 launch sllidar_ros2 view_sllidar_launch.py
 ```
 
-The command for sllidar A3 is : 
+The command for Rplidar A3 is : 
 
 ```bash
 ros2 launch sllidar_ros2 view_sllidar_a3_launch.py
 ```
 
-The command for sllidar S1 is : 
+The command for Rplidar S1 is : 
 
 ```bash
 ros2 launch sllidar_ros2 view_sllidar_s1_launch.py
 ```
 
-The command for sllidar S2 is : 
+The command for Rplidar S2 is : 
 
 ```bash
 ros2 launch sllidar_ros2 view_sllidar_s2_launch.py
 ```
 
-The command for sllidar T1 is : 
+The command for Slamtec Lpx T1 is : 
 
 ```bash
 ros2 launch sllidar_ros2 view_sllidar_t1_launch.py
 ```
 
-The command for sllidar S1(TCP connection) is : 
+The command for Rplidar S1(TCP connection) is : 
 
 ```bash
 ros2 launch sllidar_ros2 view_sllidar_s1_tcp_launch.py
