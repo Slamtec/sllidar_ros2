@@ -13,7 +13,7 @@ SLAMTEC LIDAR SDK: https://github.com/Slamtec/rplidar_sdk
 SLAMTEC LIDAR Tutorial:  https://github.com/robopeak/rplidar_ros/wiki
 
 
-Supported Platforms
+Supported SLAMTEC LIDAR MODEL
 -------------------
 | SLAMTEC LIDAR Model    | 
 | ---------------------- | 
