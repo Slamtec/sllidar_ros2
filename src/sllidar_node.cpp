@@ -77,7 +77,7 @@ class SLlidarNode : public rclcpp::Node
         this->declare_parameter("inverted", false);
         this->declare_parameter("angle_compensate", false);
         this->declare_parameter("scan_mode", std::string());
-        this->declare_parameter("scan_frequency", 20.0);
+        this->declare_parameter("scan_frequency", 10.0);
 
         this->get_parameter_or<std::string>("channel_type", channel_type, "serial");
         this->get_parameter_or<std::string>("tcp_ip", tcp_ip, "192.168.0.7"); 
