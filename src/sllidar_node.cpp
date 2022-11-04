@@ -205,7 +205,7 @@ class SLlidarNode : public rclcpp::Node
         static int scan_count = 0;
         auto scan_msg = std::make_shared<sensor_msgs::msg::LaserScan>();
 
-        scan_msg->header.stamp = start;
+        scan_msg->header.stamp = start + rclcpp::Duration::from_seconds(scan_time / 2.0);
         scan_msg->header.frame_id = frame_id;
         scan_count++;
 
