@@ -66,35 +66,23 @@ class SLlidarNode : public rclcpp::Node
   private:    
     void init_param()
     {
-        this->declare_parameter<std::string>("channel_type", "serial");
-        this->declare_parameter<std::string>("tcp_ip","192.168.0.7");
-        this->declare_parameter<int>("tcp_port", 20108);
-        this->declare_parameter<std::string>("udp_ip", "192.168.11.2");
-        this->declare_parameter<int>("udp_port",8089);
-        this->declare_parameter<std::string>("serial_port", "/dev/ttyUSB0");
-        this->declare_parameter<int>("serial_baudrate", 1000000);
-        this->declare_parameter<std::string>("frame_id", "laser_frame");
-        this->declare_parameter<bool>("inverted", false);
-        this->declare_parameter<bool>("angle_compensate", false);
-        this->declare_parameter<std::string>("scan_mode","DenseBoost");
-        this->declare_parameter<float>("scan_frequency", 10.0);
+        channel_type = this->declare_parameter<std::string>("channel_type", "serial");
+        tcp_ip = this->declare_parameter<std::string>("tcp_ip","192.168.0.7");
+        tcp_port = this->declare_parameter<int>("tcp_port", 20108);
+        udp_ip = this->declare_parameter<std::string>("udp_ip", "192.168.11.2");
+        udp_port = this->declare_parameter<int>("udp_port",8089);
+        serial_port = this->declare_parameter<std::string>("serial_port", "/dev/ttyUSB0");
+        serial_baudrate = this->declare_parameter<int>("serial_baudrate", 1000000);
+        frame_id = this->declare_parameter<std::string>("frame_id", "laser_frame");
+        inverted = this->declare_parameter<bool>("inverted", false);
+        angle_compensate = this->declare_parameter<bool>("angle_compensate", false);
+        scan_mode = this->declare_parameter<std::string>("scan_mode","DenseBoost");
+        if(channel_type == "udp")
+          scan_frequency = this->declare_parameter<float>("scan_frequency", 20.0);
+        else 
+          scan_frequency = this->declare_parameter<float>("scan_frequency", 10.0);
 
-        // this->get_parameter_or<std::string>("channel_type", channel_type, "serial");
-        // this->get_parameter_or<std::string>("tcp_ip", tcp_ip, "192.168.0.7"); 
-        // this->get_parameter_or<int>("tcp_port", tcp_port, 20108);
-        // this->get_parameter_or<std::string>("udp_ip", udp_ip, "192.168.11.2"); 
-        // this->get_parameter_or<int>("udp_port", udp_port, 8089);
-        // this->get_parameter_or<std::string>("serial_port", serial_port, "/dev/ttyUSB0"); 
-        // this->get_parameter_or<int>("serial_baudrate", serial_baudrate, 1000000/*256000*/);//ros run for A1 A2, change to 256000 if A3
-        // this->get_parameter_or<std::string>("frame_id", frame_id, "laser_frame");
-        // this->get_parameter_or<bool>("inverted", inverted, false);
-        // this->get_parameter_or<bool>("angle_compensate", angle_compensate, false);
-        // this->get_parameter_or<std::string>("scan_mode", scan_mode, std::string());
-        // if(channel_type == "udp")
-        //     this->get_parameter_or<float>("scan_frequency", scan_frequency, 20.0);
-        // else
-        //     this->get_parameter_or<float>("scan_frequency", scan_frequency, 10.0);
-    }
+        }
 
     bool getSLLIDARDeviceInfo(ILidarDriver * drv)
     {
