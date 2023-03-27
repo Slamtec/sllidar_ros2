@@ -19,6 +19,10 @@ def generate_launch_description():
     scan_mode = LaunchConfiguration('scan_mode', default='DenseBoost')
 
     return LaunchDescription([
+        DeclareLaunchArgument(
+            'channel_type',
+            default_value=channel_type,
+            description='Specifying channel type of lidar'),
 
         DeclareLaunchArgument(
             'serial_port',
@@ -52,9 +56,10 @@ def generate_launch_description():
 
         Node(
             package='sllidar_ros2',
-            node_executable='sllidar_node',
-            node_name='sllidar_node',
-            parameters=[{'serial_port': serial_port, 
+            executable='sllidar_node',
+            name='sllidar_node',
+            parameters=[{'channel_type':channel_type,
+                         'serial_port': serial_port, 
                          'serial_baudrate': serial_baudrate, 
                          'frame_id': frame_id,
                          'inverted': inverted, 

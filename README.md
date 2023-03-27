@@ -27,8 +27,9 @@ Supported SLAMTEC LIDAR
 
 ## How to [install ROS2](https://index.ros.org/doc/ros2/Installation)
 [foxy](https://docs.ros.org/en/foxy/Installation.html),
-[dashing](https://docs.ros.org/en/dashing/Installation.html),
-[rolling](https://docs.ros.org/en/rolling/Installation.html)
+[rolling](https://docs.ros.org/en/rolling/Installation.html),
+[galactic](https://docs.ros.org/en/galactic/Installation.html),
+[humble](https://docs.ros.org/en/humble/Installation.html)
 
 ## How to configuring your ROS 2 environment
 [Configuring your ROS 2 environment](https://docs.ros.org/en/foxy/Tutorials/Configuring-ROS2-Environment.html)
@@ -91,6 +92,10 @@ The command for Rplidar S2 is :
 
 ```bash
 ros2 launch sllidar_ros2 view_sllidar_s2_launch.py
+```
+
+```bash
+ros2 launch sllidar_ros2 view_sllidar_s2e_launch.py
 ```
 
 The command for Slamtec Lpx T1 is : 
