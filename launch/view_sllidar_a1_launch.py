@@ -13,25 +13,23 @@ from launch_ros.actions import Node
 def generate_launch_description():
     channel_type =  LaunchConfiguration('channel_type', default='serial')
     serial_port = LaunchConfiguration('serial_port', default='/dev/ttyUSB0')
-    serial_baudrate = LaunchConfiguration('serial_baudrate', default='115200') #for A1/A2 is 115200
+    serial_baudrate = LaunchConfiguration('serial_baudrate', default='115200')
     frame_id = LaunchConfiguration('frame_id', default='laser')
     inverted = LaunchConfiguration('inverted', default='false')
     angle_compensate = LaunchConfiguration('angle_compensate', default='true')
     scan_mode = LaunchConfiguration('scan_mode', default='Sensitivity')
-	
+
     rviz_config_dir = os.path.join(
             get_package_share_directory('sllidar_ros2'),
             'rviz',
             'sllidar_ros2.rviz')
 
-
     return LaunchDescription([
-
         DeclareLaunchArgument(
             'channel_type',
             default_value=channel_type,
             description='Specifying channel type of lidar'),
-        
+
         DeclareLaunchArgument(
             'serial_port',
             default_value=serial_port,
@@ -56,6 +54,7 @@ def generate_launch_description():
             'angle_compensate',
             default_value=angle_compensate,
             description='Specifying whether or not to enable angle_compensate of scan data'),
+
         DeclareLaunchArgument(
             'scan_mode',
             default_value=scan_mode,
@@ -70,9 +69,8 @@ def generate_launch_description():
                          'serial_baudrate': serial_baudrate, 
                          'frame_id': frame_id,
                          'inverted': inverted, 
-                         'angle_compensate': angle_compensate,
-                           'scan_mode': scan_mode
-                         }],
+                         'angle_compensate': angle_compensate, 
+                         'scan_mode': scan_mode}],
             output='screen'),
 
         Node(
