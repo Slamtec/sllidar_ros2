@@ -30,7 +30,6 @@
   *
   */
 
-#pragma once
 #include "sl_lidar_driver.h"
 #include "hal/abs_rxtx.h"
 #include "hal/socket.h"
@@ -103,6 +102,10 @@ namespace sl {
         void setDTR(bool dtr)
         {
             dtr ? _rxtxSerial->setDTR() : _rxtxSerial->clearDTR();
+        }
+
+        int getChannelType() {
+            return CHANNEL_TYPE_SERIALPORT;
         }
 
     private:

@@ -30,7 +30,6 @@
   *
   */
 
-#pragma once
 #include "sl_lidar_driver.h"
 #include "hal/abs_rxtx.h"
 #include "hal/socket.h"
@@ -93,6 +92,10 @@ namespace sl {
         void clearReadCache() {}
 
         void setStatus(_u32 flag){}
+
+        int getChannelType() {
+            return CHANNEL_TYPE_TCP;
+        }
     private:
         rp::net::StreamSocket * _binded_socket;
         rp::net::SocketAddress _socket;

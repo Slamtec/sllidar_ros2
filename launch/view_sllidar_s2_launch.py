@@ -11,6 +11,7 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
+    channel_type =  LaunchConfiguration('channel_type', default='serial')
     serial_port = LaunchConfiguration('serial_port', default='/dev/ttyUSB0')
     serial_baudrate = LaunchConfiguration('serial_baudrate', default='1000000') #for s2 is 1000000
     frame_id = LaunchConfiguration('frame_id', default='laser')
@@ -25,6 +26,10 @@ def generate_launch_description():
 
 
     return LaunchDescription([
+        DeclareLaunchArgument(
+            'channel_type',
+            default_value=channel_type,
+            description='Specifying channel type of lidar'),
 
         DeclareLaunchArgument(
             'serial_port',
@@ -58,21 +63,22 @@ def generate_launch_description():
 
         Node(
             package='sllidar_ros2',
-            node_executable='sllidar_node',
-            node_name='sllidar_node',
-            parameters=[{'serial_port': serial_port, 
+            executable='sllidar_node',
+            name='sllidar_node',
+            parameters=[{'channel_type':channel_type,
+                         'serial_port': serial_port, 
                          'serial_baudrate': serial_baudrate, 
                          'frame_id': frame_id,
                          'inverted': inverted, 
-                         'angle_compensate': angle_compensate, 
-                         'scan_mode': scan_mode}],
-            arguments=['--ros-args --log-level debug'],
+                         'angle_compensate': angle_compensate,
+                           'scan_mode': scan_mode
+                         }],
             output='screen'),
 
         Node(
             package='rviz2',
-            node_executable='rviz2',
-            node_name='rviz2',
+            executable='rviz2',
+            name='rviz2',
             arguments=['-d', rviz_config_dir],
             output='screen'),
     ])

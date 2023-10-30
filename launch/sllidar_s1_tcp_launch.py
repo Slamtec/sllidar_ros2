@@ -52,8 +52,8 @@ def generate_launch_description():
 
         Node(
             package='sllidar_ros2',
-            node_executable='sllidar_node',
-            node_name='sllidar_node',
+            executable='sllidar_node',
+            name='sllidar_node',
             parameters=[{'channel_type': channel_type, 
                          'tcp_ip': tcp_ip,
                          'tcp_port': tcp_port, 

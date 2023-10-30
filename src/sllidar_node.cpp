@@ -60,31 +60,31 @@ class SLlidarNode : public rclcpp::Node
     {
 
       scan_pub = this->create_publisher<sensor_msgs::msg::LaserScan>("scan", rclcpp::QoS(rclcpp::KeepLast(10)));
-      
+
     }
 
-  private:    
+  private:
     void init_param()
     {
-        this->declare_parameter("channel_type", "serial");
-        this->declare_parameter("tcp_ip", "192.168.0.7");
-        this->declare_parameter("tcp_port", 20108);
-        this->declare_parameter("udp_ip", "192.168.11.2");
-        this->declare_parameter("udp_port", 8089);
-        this->declare_parameter("serial_port", "/dev/ttyUSB0");
-        this->declare_parameter("serial_baudrate", 115200);
-        this->declare_parameter("frame_id", "laser");
-        this->declare_parameter("inverted", false);
-        this->declare_parameter("angle_compensate", false);
-        this->declare_parameter("scan_mode", std::string());
-        this->declare_parameter("scan_frequency", 10.0);
+        this->declare_parameter<std::string>("channel_type","serial");
+        this->declare_parameter<std::string>("tcp_ip", "192.168.0.7");
+        this->declare_parameter<int>("tcp_port", 20108);
+        this->declare_parameter<std::string>("udp_ip","192.168.11.2");
+        this->declare_parameter<int>("udp_port",8089);
+        this->declare_parameter<std::string>("serial_port", "/dev/ttyUSB0");
+        this->declare_parameter<int>("serial_baudrate",1000000);
+        this->declare_parameter<std::string>("frame_id","laser_frame");
+        this->declare_parameter<bool>("inverted", false);
+        this->declare_parameter<bool>("angle_compensate", false);
+        this->declare_parameter<std::string>("scan_mode",std::string());
+        this->declare_parameter<float>("scan_frequency",10);
 
         this->get_parameter_or<std::string>("channel_type", channel_type, "serial");
-        this->get_parameter_or<std::string>("tcp_ip", tcp_ip, "192.168.0.7"); 
+        this->get_parameter_or<std::string>("tcp_ip", tcp_ip, "192.168.0.7");
         this->get_parameter_or<int>("tcp_port", tcp_port, 20108);
-        this->get_parameter_or<std::string>("udp_ip", udp_ip, "192.168.11.2"); 
+        this->get_parameter_or<std::string>("udp_ip", udp_ip, "192.168.11.2");
         this->get_parameter_or<int>("udp_port", udp_port, 8089);
-        this->get_parameter_or<std::string>("serial_port", serial_port, "/dev/ttyUSB0"); 
+        this->get_parameter_or<std::string>("serial_port", serial_port, "/dev/ttyUSB0");
         this->get_parameter_or<int>("serial_baudrate", serial_baudrate, 1000000/*256000*/);//ros run for A1 A2, change to 256000 if A3
         this->get_parameter_or<std::string>("frame_id", frame_id, "laser_frame");
         this->get_parameter_or<bool>("inverted", inverted, false);
@@ -112,7 +112,7 @@ class SLlidarNode : public rclcpp::Node
         }
 
         // print out the device serial number, firmware and hardware version number..
-        char sn_str[37] = {'\0'}; 
+        char sn_str[37] = {'\0'};
         for (int pos = 0; pos < 16 ;++pos) {
             sprintf(sn_str + (pos * 2),"%02X", devinfo.serialnum[pos]);
         }
@@ -127,7 +127,7 @@ class SLlidarNode : public rclcpp::Node
         sl_result     op_result;
         sl_lidar_response_device_health_t healthinfo;
         op_result = drv->getHealth(healthinfo);
-        if (SL_IS_OK(op_result)) { 
+        if (SL_IS_OK(op_result)) {
             RCLCPP_INFO(this->get_logger(),"SLLidar health status : %d", healthinfo.status);
             switch (healthinfo.status) {
                 case SL_LIDAR_STATUS_OK:
@@ -139,6 +139,10 @@ class SLlidarNode : public rclcpp::Node
                 case SL_LIDAR_STATUS_ERROR:
                     RCLCPP_ERROR(this->get_logger(),"Error, SLLidar internal error detected. Please reboot the device to retry.");
                     return false;
+                default:
+                    RCLCPP_ERROR(this->get_logger(),"Error, Unknown internal error detected. Please reboot the device to retry.");
+                    return false;
+
             }
         } else {
             RCLCPP_ERROR(this->get_logger(),"Error, cannot retrieve SLLidar health code: %x", op_result);
@@ -176,7 +180,7 @@ class SLlidarNode : public rclcpp::Node
                 RCLCPP_WARN(this->get_logger(), "Failed to start motor: %08x", ans);
                 return false;
             }
-        
+
             ans=drv->startScan(0,1);
             if (SL_IS_FAIL(ans)) {
                 RCLCPP_WARN(this->get_logger(), "Failed to start scan: %08x", ans);
@@ -249,15 +253,15 @@ class SLlidarNode : public rclcpp::Node
 
         pub->publish(*scan_msg);
     }
-public:    
+public:
     int work_loop()
-    {        
+    {
         init_param();
         int ver_major = SL_LIDAR_SDK_VERSION_MAJOR;
         int ver_minor = SL_LIDAR_SDK_VERSION_MINOR;
         int ver_patch = SL_LIDAR_SDK_VERSION_PATCH;
         RCLCPP_INFO(this->get_logger(),"SLLidar running on ROS2 package SLLidar.ROS2 SDK Version:" ROS2VERSION ", SLLIDAR SDK Version:%d.%d.%d",ver_major,ver_minor,ver_patch);
-    
+
         sl_result     op_result;
 
         // create the driver instance
@@ -280,12 +284,12 @@ public:
                 RCLCPP_ERROR(this->get_logger(),"Error, cannot connect to the ip addr  %s with the udp port %s.",udp_ip.c_str(),std::to_string(udp_port).c_str());
             }
             else{
-                RCLCPP_ERROR(this->get_logger(),"Error, cannot bind to the specified serial port %s.",serial_port.c_str());            
+                RCLCPP_ERROR(this->get_logger(),"Error, cannot bind to the specified serial port %s.",serial_port.c_str());
             }
             delete drv;
             return -1;
         }
-        
+
         // get sllidar device info
         if (!getSLLIDARDeviceInfo(drv)) {
             return -1;
@@ -296,9 +300,9 @@ public:
             return -1;
         }
 
-        stop_motor_service = this->create_service<std_srvs::srv::Empty>("stop_motor",  
+        stop_motor_service = this->create_service<std_srvs::srv::Empty>("stop_motor",
                                 std::bind(&SLlidarNode::stop_motor,this,std::placeholders::_1,std::placeholders::_2));
-        start_motor_service = this->create_service<std_srvs::srv::Empty>("start_motor", 
+        start_motor_service = this->create_service<std_srvs::srv::Empty>("start_motor",
                                 std::bind(&SLlidarNode::start_motor,this,std::placeholders::_1,std::placeholders::_2));
 
         drv->setMotorSpeed();
@@ -337,10 +341,10 @@ public:
             //default frequent is 10 hz (by motor pwm value),  current_scan_mode.us_per_sample is the number of scan point per us
             int points_per_circle = (int)(1000*1000/current_scan_mode.us_per_sample/scan_frequency);
             angle_compensate_multiple = points_per_circle/360.0  + 1;
-            if(angle_compensate_multiple < 1) 
+            if(angle_compensate_multiple < 1)
             angle_compensate_multiple = 1.0;
             max_distance = (float)current_scan_mode.max_distance;
-            RCLCPP_INFO(this->get_logger(),"current scan mode: %s, sample rate: %d Khz, max_distance: %.1f m, scan frequency:%.1f Hz, ", 
+            RCLCPP_INFO(this->get_logger(),"current scan mode: %s, sample rate: %d Khz, max_distance: %.1f m, scan frequency:%.1f Hz, ",
                                 current_scan_mode.scan_mode,(int)(1000/current_scan_mode.us_per_sample+0.5),max_distance, scan_frequency);
         }
         else
@@ -386,7 +390,7 @@ public:
                                 }
                             }
                         }
-    
+
                         publish_scan(scan_pub, angle_compensate_nodes, angle_compensate_nodes_count,
                                 start_scan_time, scan_duration, inverted,
                                 angle_min, angle_max, max_distance,
@@ -457,7 +461,7 @@ public:
     std::string scan_mode;
     float scan_frequency;
 
-    ILidarDriver * drv;    
+    ILidarDriver * drv;
 };
 
 void ExitHandler(int sig)
@@ -469,11 +473,10 @@ void ExitHandler(int sig)
 
 int main(int argc, char * argv[])
 {
-  rclcpp::init(argc, argv);  
+  rclcpp::init(argc, argv);
   auto sllidar_node = std::make_shared<SLlidarNode>();
   signal(SIGINT,ExitHandler);
   int ret = sllidar_node->work_loop();
   rclcpp::shutdown();
   return ret;
 }
-

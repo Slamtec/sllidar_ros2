@@ -30,7 +30,6 @@
   *
   */
 
-#pragma once
 #include "sl_lidar_driver.h"
 #include "hal/abs_rxtx.h"
 #include "hal/socket.h"
@@ -98,9 +97,15 @@ namespace sl {
         
         }
 
-        void clearReadCache() {}
+        void clearReadCache() {
+          _binded_socket->clearRxCache();
+        }
 
         void setStatus(_u32 flag){}
+        
+        int getChannelType() {
+            return CHANNEL_TYPE_UDP;
+        }
 
 	private:
 		rp::net::DGramSocket * _binded_socket;
