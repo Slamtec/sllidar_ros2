@@ -24,6 +24,8 @@ FILE(GLOB SLLIDAR_SDK_SRC
   "${SLLIDAR_SDK_PATH}/src/arch/linux/*.cpp"
   "${SLLIDAR_SDK_PATH}/src/hal/*.cpp"
   "${SLLIDAR_SDK_PATH}/src/*.cpp"
+  "${SLLIDAR_SDK_PATH}/src/dataunpacker/*.cpp"
+  "${SLLIDAR_SDK_PATH}/src/dataunpacker/unpacker/*.cpp"
 )
 
 ################################################################################
