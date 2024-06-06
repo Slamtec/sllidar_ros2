@@ -225,7 +225,7 @@ class SLlidarNode : public rclcpp::Node
 
         scan_msg->scan_time = scan_time;
         scan_msg->time_increment = scan_time / (double)(node_count-1);
-        scan_msg->range_min = 0.15;
+        scan_msg->range_min = 5;
         scan_msg->range_max = max_distance;//8.0;
 
         scan_msg->intensities.resize(node_count);
@@ -367,7 +367,7 @@ public:
             if (op_result == SL_RESULT_OK) {
                 op_result = drv->ascendScanData(nodes, count);
                 float angle_min = DEG2RAD(0.0f);
-                float angle_max = DEG2RAD(359.0f);
+                float angle_max = DEG2RAD(360.0f);
                 if (op_result == SL_RESULT_OK) {
                     if (angle_compensate) {
                         //const int angle_compensate_multiple = 1;
