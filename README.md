@@ -96,7 +96,7 @@ SLAMTEC LIDAR Tutorial: <https://github.com/robopeak/rplidar_ros/wiki>
    But a better way is to create a udev rule:
 
    ```bash
-   cd src/rpldiar_ros/
+   cd src/sllidar_ros2/
    source scripts/create_udev_rules.sh
    ```
 
