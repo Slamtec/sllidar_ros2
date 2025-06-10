@@ -55,12 +55,17 @@ bool need_exit = false;
 class SLlidarNode : public rclcpp::Node
 {
   public:
-    SLlidarNode()
-    : Node("sllidar_node")
+    SLlidarNode(const rclcpp::NodeOptions & options)
+    : Node("sllidar_node", options)
     {
 
-      scan_pub = this->create_publisher<sensor_msgs::msg::LaserScan>("scan", rclcpp::QoS(rclcpp::KeepLast(10)));
-      
+        // Retrieve a parameter (passed from the launch file)
+        this->declare_parameter<std::string>("scan_topic", "scan");
+        std::string scan_topic;
+        this->get_parameter_or<std::string>("scan_topic", scan_topic, "scan");
+        RCLCPP_INFO(this->get_logger(), "scan_topic: %s", scan_topic.c_str());
+        scan_pub = this->create_publisher<sensor_msgs::msg::LaserScan>(scan_topic, rclcpp::QoS(rclcpp::KeepLast(10)));
+
     }
 
   private:    
@@ -473,11 +478,12 @@ void ExitHandler(int sig)
 
 int main(int argc, char * argv[])
 {
-  rclcpp::init(argc, argv);  
-  auto sllidar_node = std::make_shared<SLlidarNode>();
-  signal(SIGINT,ExitHandler);
-  int ret = sllidar_node->work_loop();
-  rclcpp::shutdown();
-  return ret;
+    rclcpp::init(argc, argv);
+    auto options = rclcpp::NodeOptions();
+    auto sllidar_node = std::make_shared<SLlidarNode>(options);
+    signal(SIGINT,ExitHandler);
+    int ret = sllidar_node->work_loop();
+    rclcpp::shutdown();
+    return ret;
 }
 
