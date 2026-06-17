@@ -305,6 +305,13 @@ public:
         start_motor_service = this->create_service<std_srvs::srv::Empty>("start_motor", 
                                 std::bind(&SLlidarNode::start_motor,this,std::placeholders::_1,std::placeholders::_2));
 
+        MotorCtrlSupport motorCtrlSupport = MotorCtrlSupportNone;
+        LidarMotorInfo motorInfo;
+        if (SL_IS_OK(drv->checkMotorCtrlSupport(motorCtrlSupport))) {
+            motorInfo.motorCtrlSupport = motorCtrlSupport;
+            drv->getMotorInfo(motorInfo);
+        }
+
         drv->setMotorSpeed();
 
         LidarScanMode current_scan_mode;
@@ -338,6 +345,14 @@ public:
 
         if(SL_IS_OK(op_result))
         {
+            if (motorCtrlSupport == MotorCtrlSupportRpm) {
+                sl_u16 speed = (sl_u16)(scan_frequency * 60);
+                drv->setMotorSpeed(speed);
+            } else if (motorCtrlSupport == MotorCtrlSupportPwm && motorInfo.desired_speed > 0) {
+                sl_u16 speed = (sl_u16)(scan_frequency / 10.0 * motorInfo.desired_speed);
+                drv->setMotorSpeed(speed);
+            }
+
             //default frequent is 10 hz (by motor pwm value),  current_scan_mode.us_per_sample is the number of scan point per us
             int points_per_circle = (int)(1000*1000/current_scan_mode.us_per_sample/scan_frequency);
             angle_compensate_multiple = points_per_circle/360.0  + 1;
