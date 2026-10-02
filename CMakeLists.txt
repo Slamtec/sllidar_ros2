@@ -1,7 +1,7 @@
 ################################################################################
 # Set minimum required version of cmake, project name and compile options
 ################################################################################
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 project(sllidar_ros2)
 
 if(NOT CMAKE_CXX_STANDARD)
@@ -47,17 +47,17 @@ include_directories(
 
 add_executable(sllidar_node	src/sllidar_node.cpp ${SLLIDAR_SDK_SRC})
 # target_link_libraries(sllidar_node ${ament_cmake_LIBRARIES})
-ament_target_dependencies(sllidar_node
-  rclcpp
-  std_srvs
-  sensor_msgs
+target_link_libraries(sllidar_node PUBLIC
+  rclcpp::rclcpp
+  std_srvs::std_srvs
+  sensor_msgs::sensor_msgs
 )
 
 add_executable(sllidar_client src/sllidar_client.cpp)
-ament_target_dependencies(sllidar_client
-  rclcpp
-  std_srvs
-  sensor_msgs
+target_link_libraries(sllidar_client PUBLIC
+  rclcpp::rclcpp
+  std_srvs::std_srvs
+  sensor_msgs::sensor_msgs
 )
 ################################################################################
 # Install
